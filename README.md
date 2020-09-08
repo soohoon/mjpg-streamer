@@ -1,3 +1,7 @@
+Changes
+=======
+Add a few files for 3d printer bluetooth connection and video monitoring.
+
 mjpg-streamer
 =============
 
