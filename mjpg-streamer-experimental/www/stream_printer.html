@@ -1,0 +1,189 @@
+<html>
+  <head>
+    <title>MJPG-Streamer - Stream Example</title>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <script type="text/javascript" src="jquery.js"></script>    
+    <script type="text/javascript" src="jquery.rotate.js"></script>
+    <!--[if IE 6]>
+    <link rel="stylesheet" href="fix.css" type="text/css" />
+    <![endif]-->
+    <script type="text/javascript">
+    
+    var phi = 0, flipped = 0, mirrored = 0;
+
+	function setXformClass () {
+		$('.xform').each(function(idx,el) {
+			el.className = "xform x" +(flipped ? "-flipped":"") + (mirrored ? "-mirrored" : "") + "-rotated-" + phi;
+		});
+	}
+    $(document).ready(function() {
+		// set rotation angle phi and toggle rotate class
+		$('#rotate').click(function() {
+			phi = (phi + 90) % 360;
+			setXformClass();
+			if (phi % 180) {
+				$('.xform-p').addClass('rotated');
+			} else {
+				$('.xform-p').removeClass('rotated');
+			}
+		});
+		// toggle mirror class component
+		$('#mirror').click(function() {
+			mirrored = ! mirrored;
+			setXformClass();
+		});
+		// toggle flip class component
+		$('#flip').click(function() {
+			flipped = ! flipped;
+			setXformClass();
+		});
+	});
+
+	function defined(val) {
+		return (typeof val != "undefined");
+	}
+
+	function setElementContent(id, content) {
+		if(!document.getElementById(id)) return;
+		document.getElementById(id).innerHTML = content;
+	}
+
+
+	function StatusUpdate(_url, _frequency) {
+		var request;
+		var timer;
+		var url = _url;
+		var frequency = _frequency * 1000;
+		var me = this;
+		var callbacks = new Object();
+		var updates = new Object();
+
+		this.start = function() {
+			if((!window.XMLHttpRequest && !window.ActiveXObject) || frequency == 0) return false;
+			if(document.getElementsByName("refresh_button")[0])
+				document.getElementsByName("refresh_button")[0].disabled = true;
+			timer = setTimeout(me.doUpdate, frequency);
+		}
+		
+		this.stop = function() {
+			clearTimeout(timer);
+			if(document.getElementsByName("refresh_button")[0])
+				document.getElementsByName("refresh_button")[0].disabled = false;
+			request = null;
+		}
+		
+		this.onUpdate = function(id, func) {
+			callbacks[id] = func;
+		}       
+
+		this.doUpdateOnce = function() {
+			if(request && request.readyState < 4) return;
+			if(window.XMLHttpRequest) request = new XMLHttpRequest();
+			else if(window.ActiveXObject) request = new ActiveXObject("Microsoft.XMLHTTP");
+			request.open("GET", url, true);
+			request.onreadystatechange = function() {
+				if(request.readyState < 4 || request.status != 200) return;
+				var activeCallbacks = new Array();
+				var regex = /\{(\w+)::([^\}]*)\}/g;
+				while(result = regex.exec(request.responseText)) {
+					var key = result[1];
+					var value = result[2];
+					if(defined(updates[key]) && updates[key] == value) continue;
+					updates[key] = value;
+					if(defined(callbacks[key])) activeCallbacks.push(callbacks[key]);
+					setElementContent(key, value);
+				}
+				for(var i = 0; i < activeCallbacks.length; i++) { (activeCallbacks[i])(updates); }
+				timer = setTimeout(me.doUpdate, frequency);
+			}
+			request.send("");
+		}
+
+		this.doUpdate = function() {
+			if(request && request.readyState < 4) return;
+			if(window.XMLHttpRequest) request = new XMLHttpRequest();
+			else if(window.ActiveXObject) request = new ActiveXObject("Microsoft.XMLHTTP");
+			request.open("GET", url, true);
+			request.onreadystatechange = function() {
+				if(request.readyState < 4 || request.status != 200) return;
+				var activeCallbacks = new Array();
+				var regex = /\{(\w+)::([^\}]*)\}/g;
+				while(result = regex.exec(request.responseText)) {
+					var key = result[1];
+					var value = result[2];
+					if(defined(updates[key]) && updates[key] == value) continue;
+					updates[key] = value;
+					if(defined(callbacks[key])) activeCallbacks.push(callbacks[key]);
+					setElementContent(key, value);
+				}
+				for(var i = 0; i < activeCallbacks.length; i++) { (activeCallbacks[i])(updates); }
+				timer = setTimeout(me.doUpdate, frequency);
+			}
+			request.send("");
+		}
+
+		this.forceUpdate = function() {
+			this.stop();
+			this.doUpdate();
+		}
+	}
+
+	var update;
+	var nodes;
+	update = new StatusUpdate('/temperature.cgi', 3);
+	update.onUpdate('cluNodeStat', function(u) {
+	        nodes = document.getElementById('nodes');
+	        nodes.innerHTML = u.cluNodeStat;
+	});
+	//update.onUpdate('cluIPStat', function(u) {
+	//        nodes = document.getElementById('pubips');
+	//        nodes.innerHTML = u.cluIPStat;
+	//});
+	update.start();
+	update.doUpdate();
+
+	function callaction(url) {
+		if(window.XMLHttpRequest) request = new XMLHttpRequest();
+		else if(window.ActiveXObject) request = new ActiveXObject("Microsoft.XMLHTTP");
+		request.open("GET", url, true);
+		request.send("");
+	}
+	</script>
+  </head>
+  <body>
+    <div id="sidebar">
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<p id="xform">
+		<button id="rotate"><div class="btnface"></div></button>
+		<button id="mirror"><div class="btnface"></div></button>
+		<button id="flip"><div class="btnface"></div></button>
+	</p>
+	<br>
+	<br>
+	<br>
+	<br>
+	<input type=button value=DiscoverOn onClick="callaction('/discoverableon.cgi')">
+	<input type=button value=DiscoverOff onClick="callaction('/discoverableoff.cgi')">
+	<br>
+	<input type=button value=resetrfcomm onClick="callaction('/resetrfcomm.cgi')">
+	<br>
+
+    </div>
+
+    <div id="content">
+	<p class="xform-p"></p>
+	<p id="streamwrap" class="xform-p">
+		<img id="streamimage" class="xform" src="./?action=stream" />
+	</p>
+
+        <span id=nodes>Loading...</span>&nbsp;
+
+    </div>
+
+  </body>
+</html>

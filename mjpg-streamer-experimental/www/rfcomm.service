@@ -1,0 +1,13 @@
+[Unit]
+Description=RFCOMM
+After=bluetooth.service ssh.service
+
+[Service]
+Type=simple
+ExecStartPre=/bin/sleep 10
+ExecStartPre=/usr/bin/sdptool add SP
+ExecStartPre=/usr/bin/bluetoothctl pairable on
+ExecStart=/usr/bin/rfcomm watch hci0 1 /home/pi/scr
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,5 @@
+stty -F /dev/ttyUSB0 115200 cs8 -parenb cstopb crtscts  -opost -isig -icanon -echo
+stty -F /dev/rfcomm0 115200 cs8 -parenb cstopb crtscts  -opost -isig -icanon -echo
+
+socat /dev/rfcomm0,raw /dev/ttyUSB0,raw
+#minicom -b 115200 -8 -o -D /dev/rfcomm0
