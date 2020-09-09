@@ -16,8 +16,14 @@ if ps ax | grep -v grep | grep socat > /dev/null; then
 else
 	echo Bluetooth Not Connected
 fi
-hcitool tpl `hcitool con | awk '/ACL/{print $3}'`
-bluetoothctl show
+DEV=`hcitool con | awk '/ACL/{print $3}'`
+if [ ! -z "$DEV" ]; then
+	hcitool tpl $DEV
+	hcitool rssi $DEV
+fi
+if [ -f /tmp/discover ]; then
+	bluetoothctl show
+fi
 echo
 echo "</pre>"
 echo "}"
