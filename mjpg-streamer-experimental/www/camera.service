@@ -1,0 +1,11 @@
+[Unit]
+Description=Camera
+Documentation=man:sshd(8) man:sshd_config(5)
+After=network.target auditd.service
+
+[Service]
+Type=simple
+ExecStart=/bin/sh -x /home/pi/mjpg-streamer/mjpg-streamer-experimental/www/start
+
+[Install]
+WantedBy=multi-user.target
