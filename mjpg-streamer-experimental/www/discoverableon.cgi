@@ -9,3 +9,4 @@ echo Expires: Mon, 3 Jan 2000 12:34:56 GMT
 echo
 echo
 bluetoothctl discoverable on
+touch /tmp/discover

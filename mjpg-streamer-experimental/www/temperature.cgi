@@ -13,16 +13,14 @@ echo "<pre>"
 /opt/vc/bin/vcgencmd measure_temp
 if ps ax | grep -v grep | grep socat > /dev/null; then
 	echo Bluetooth Connected
-else
-	echo Bluetooth Not Connected
-fi
-DEV=`hcitool con | awk '/ACL/{print $3}'`
-if [ ! -z "$DEV" ]; then
+	DEV=`hcitool con | awk '/ACL/{print $3}'`
 	hcitool tpl $DEV
 	hcitool rssi $DEV
-fi
-if [ -f /tmp/discover ]; then
-	bluetoothctl show
+	if [ -f /tmp/discover ]; then
+		bluetoothctl show
+	fi
+else
+	echo Bluetooth Not Connected
 fi
 echo
 echo "</pre>"
