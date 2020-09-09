@@ -1,7 +1,7 @@
 [Unit]
 Description=Camera
 Documentation=man:sshd(8) man:sshd_config(5)
-After=network.target auditd.service dhcpcd.service
+After=network.target auditd.service bluetooth.service
 
 [Service]
 Type=simple
