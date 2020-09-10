@@ -2,6 +2,44 @@ Changes
 =======
 Add a few files for 3d printer bluetooth connection and video monitoring.
 
+Install
+=======
+
+Raspberry side:
+This is for raspbian distro and raspberry camera.
+	install raspbian
+	https://www.raspberrypi.org/downloads/raspberry-pi-os/
+
+	boot and cd to /home/pi
+	$ git clone --depth=1 https://github.com/soohoon/mjpg-streamer.git
+	$ cp mjpg-streamer/mjpg-streamer-experimental/www/*.service /lib/systemd/system/
+
+	Enable camera in raspi-config
+	Enable overlay on root and boot volumes in raspi-config->Advanced Options->Overlay FS
+	$ reboot
+
+Windows side:
+	Browser: Connect to the camera page
+		http://<address>:8080/stream_printer.html
+		Click 'DiscoverOn'
+
+	Pair with raspberry at
+		Setting->Devices->bluetooth
+
+	Disable the incoming COM port.
+		Setting->Devices->bluetooth->more bluetooth options->COM ports
+
+	Modify Cura
+		C:\Program Files\Ultimaker Cura 4.7\plugins\USBPrinting\USBPrinterOutputDeviceManager.py
+		line 126
+		from
+			if only_list_usb and not port[2].startswith("USB"):
+		to
+			if only_list_usb and not port[2].startswith("USB") and not port[2].startswith("BTH"):
+	Start Cura.
+		If it doesn't connect to the printer, restart Cura.
+		Or try clicking 'resetrfcomm' in camera page and restart Cura.
+
 mjpg-streamer
 =============
 
