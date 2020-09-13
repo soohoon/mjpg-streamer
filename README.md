@@ -1,11 +1,11 @@
 Changes
 =======
 Add a few files for 3d printer bluetooth connection and video monitoring.
-So you can print directly from Cura to the printer remotely.
-Total cost is about $15. Raspberry pi zero W($10) + camera($4) + cable($1)
-https://www.microcenter.com/product/486575/raspberry-pi-zero-w
-https://www.ebay.com/itm/CSI-interface-Camera-Module-5MP-Webcam-Video-1080p-720p-Pi-2b-For-Raspberry-X3T1/303618306923?hash=item46b10fb36b%3Ag%3AVTYAAOSw051fBnrq&LH_BIN=1
-https://www.ebay.com/itm/Raspberry-Pi-Zero-Camera-Cable-PI3-PI2-PI1-camera-connect-to-PI0-zero-W/331978725564?hash=item4d4b7958bc%3Ag%3AaiQAAOSwLF1X49lg&LH_BIN=1
+	So you can print directly from Cura to the printer remotely.
+	Total cost is about $15. Raspberry pi zero W($10) + camera($4) + cable($1)
+	https://www.microcenter.com/product/486575/raspberry-pi-zero-w
+	https://www.ebay.com/itm/CSI-interface-Camera-Module-5MP-Webcam-Video-1080p-720p-Pi-2b-For-Raspberry-X3T1/303618306923?hash=item46b10fb36b%3Ag%3AVTYAAOSw051fBnrq&LH_BIN=1
+	https://www.ebay.com/itm/Raspberry-Pi-Zero-Camera-Cable-PI3-PI2-PI1-camera-connect-to-PI0-zero-W/331978725564?hash=item4d4b7958bc%3Ag%3AaiQAAOSwLF1X49lg&LH_BIN=1
 
 Install
 =======
