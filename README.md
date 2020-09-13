@@ -31,7 +31,7 @@ This is for raspbian distro and raspberry camera.
 
 Windows side:
 	Browser: Connect to the camera page
-		http://<address>:8080/stream_printer.html
+		http://address:8080/stream_printer.html
 		Click 'DiscoverOn'
 
 	Pair with raspberry at
