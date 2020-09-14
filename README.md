@@ -41,7 +41,7 @@ Windows side:
 	Disable the incoming COM port.
 		Setting->Devices->bluetooth->more bluetooth options->COM ports
 
-	Modify Cura
+	Modify Cura. ( I only tried 4.7 and other versions might or might not works )
 		C:\Program Files\Ultimaker Cura 4.7\plugins\USBPrinting\USBPrinterOutputDeviceManager.py
 		line 126
 		from
